@@ -1,49 +1,41 @@
-import java.io.*;
-import java.util.*;
+import java.util.Scanner;
+
 
 public class Main {
-    public static void main(String[] args){
-        File fp=new File("text.txt");
-        int count=0, k=0;
-        String simvol="";
-        System.out.println("\tЗадание:\n В каждом слове текста k-ю букву заменить заданным символом. Если k больше длины слова, корректировку не выполнять");
-        //
-        while (true) {
-            System.out.println("Введите число k ");
-            Scanner sc1 = new Scanner(System.in);
-            try {
-                k = sc1.nextInt();
-                break;
-            } catch (InputMismatchException fg) {
-                System.out.println("Вы ввели не число. ");
-            }
+    public static void main(String[] args) {
+
+        Scanner scanner  = new Scanner(System. in );
+
+        System.out.println("Введите текст:");
+        String text = scanner.nextLine();
+
+        System.out.println("Введите позицию k:");
+        int k = scanner.nextInt();
+
+        System.out.println("Введите символ для замены:");
+        char symbol = scanner.next().charAt(0);
+
+        String[] words = text.split(" ");
+
+        for (int i = 0; i < words.length; i++) {
+            words[i] = replaceKthLetter(words[i], k, symbol);
         }
-        while (true) {
-            System.out.println("Введите символ ");
-            Scanner sc2 = new Scanner(System.in);
-            try {
-                simvol = sc2.nextLine();
-                break;
-            } catch (InputMismatchException fg) {
-                System.out.println("Вы ввели не символ. ");
-            }
-        }
-        //
-        try(FileReader reader = new FileReader("text.txt"))
-        {
-            int c;
-            while((c=reader.read())!=-1){
-                if(count==k) {
-                    System.out.print(simvol);
-                    count=0;
-                }
-                else
-                    System.out.print((char)c);
-                count++;
-            }
-        }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
-        }
+
+        String resultText = String.join(" ", words);
+
+        System.out.println("Результат:");
+        System.out.println(resultText);
+
+        scanner.close();
     }
+
+    private static String replaceKthLetter(String word, int k, char symbol) {
+        if (k > 0 && k <= word.length()) {
+            char[] chars = word.toCharArray();
+            chars[k - 1] = symbol;
+            return new String(chars);
+        }
+        return word;
+    }
+
 }
